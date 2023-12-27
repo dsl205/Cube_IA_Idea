@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Etiqueta H2 en Tiempo Real</title>
+</head>
+<body>
+
+<h2 id="miEtiqueta">Texto predeterminado</h2>
+<input type="text" id="inputTexto" placeholder="Nuevo texto">
+<button onclick="modificarEtiqueta()">Modificar</button>
+
+<script>
+    // Crea una conexión WebSocket
+    const socket = new WebSocket('wss://echo.websocket.org');
+
+    // Función para modificar la etiqueta H2
+    function modificarEtiqueta() {
+        var nuevoTexto = document.getElementById("inputTexto").value;
+        document.getElementById("miEtiqueta").innerText = nuevoTexto;
+
+        // Envía el nuevo texto a través de la conexión WebSocket
+        socket.send(nuevoTexto);
+    }
+
+    // Maneja los mensajes recibidos a través de WebSocket
+    socket.onmessage = function(event) {
+        var nuevoTexto = event.data;
+
+        // Actualiza la etiqueta H2 con el texto recibido
+        document.getElementById("miEtiqueta").innerText = nuevoTexto;
+    };
+</script>
+
+</body>
+</html>
